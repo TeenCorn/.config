@@ -1,0 +1,8 @@
+#!/bin/bash
+
+CWD=$(pwd)
+cd $CWD
+
+termite --title=gdbserver -e 'gdbserver localhost:12345 bin/a.out' &
+#gdbgui -x $CWD/../.gdbcmdfile &
+nemiver $CWD/bin/a.out

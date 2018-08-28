@@ -39,33 +39,15 @@ fixed-center = true
 ;override-redirect = true
 
 background = ${colors.background-white}
-;background-0 = ${colors.background-white}
-;background-1 = ${colors.background-white}
-;background-2 = ${colors.background-white}
-;background-3 = ${colors.background-white}
-;background-4 = ${colors.background-white}
-;background-5 = ${colors.background-white}
-;background-6 = ${colors.background-white}
-;background-7 = ${colors.background-white}
-;background-8 = ${colors.background-white}
-;background-9 = ${colors.background-white}
-
-
 foreground = ${colors.light_black}
 
-;line-bottom-size = 3
+underline-size = 2
 ;line-bottom-color = ${colors.grey}
 
 tray-position = right
-;tray-detatched = true
 tray-offset-y = 0
-;tray-offset-x = -390
 
-;border-top-size = 2
-;border-bottom-size = 2
-;border-color = #C0C3C1
-
-padding-left = 3
+padding-left = 1
 padding-right = 2
 
 module-margin-left = 1
@@ -73,29 +55,17 @@ module-margin-right = 1
 
 font-0 = fixed:pixelsize=10;1
 font-1 = "unifont:fontformat=truetype:size=8:antialias=false;0"
-font-2 = "TakaoGothic:pixelsize=12;0"
+font-2 = "IPAMincho:pixelsize=16;2"
 font-3 = "TerminessTTF\ Nerd\ Font:pixelsize=12;0"
 font-4 = "TerminessTTF\ Nerd\ Font\ Mono:pixelsize=12;0"
 font-5 = "TerminessTTF\ Nerd\ Font\ Mono:pixelsize=16;0"
 font-6 = "FontAwesome:pixelsize=14;0"
-font-7 = "TerminessTTF\ Nerd\ Font:pixelsize=14;0"
-font-8 = "TerminessTTF\ Nerd\ Font\ Mono:pixelsize=10;0"
+font-7 = "TerminessTTF\ Nerd\ Font:pixelsize=14;2"
+font-8 = "TerminessTTF\ Nerd\ Font:pixelsize=20;2"
 
-modules-left = menu mpd mpd2
+modules-left = text mpd mpd2
 modules-center = i3
-modules-right = pavolume temperature cpu memory disk date battery0 battery1
-
-
-;wm-restack = bspwm
-;wm-restack = i3
-
-;override-redirect = true
-
-;scroll-up = bspwm-desknext
-;scroll-down = bspwm-deskprev
-
-;scroll-up = i3wm-wsnext
-;scroll-down = i3wm-wsprev
+modules-right = pulse temperature cpu memory disk date battery0 battery1
 
 ;[bar/bar1]
 ;;monitor = ${env:MONITOR:HDMI-1}
@@ -179,7 +149,8 @@ mount-0 = /
 
 fixed-values = true
 
-format-mounted-prefix = 
+format-mounted-prefix-font = 8
+format-mounted-prefix = 
 format-mounted-prefix-padding = 2
 format-mounted = <label-mounted>
 
@@ -214,23 +185,25 @@ label-empty-padding = 2
 
 [module/i3]
 type = internal/i3
-format = <label-state> <label-mode>
-index-sort = true
+index-sort = false
 enable-click = true
 wrapping-scroll = false
-strip-wsnumbers = true
+strip-wsnumbers = false
+fuzzy-match = false
 
-ws-icon-font = 4
-;ws-icon-0 = 1;
-;ws-icon-1 = 2;
-;ws-icon-2 = 3;
-;ws-icon-0 = 4:;
-;ws-icon-1 = 5:;
-;ws-icon-2 = 6:;
-;ws-icon-3 = 7:;
-;ws-icon-7 = 8;
-;ws-icon-9 = Music;
+ws-icon-font = 8
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;
+ws-icon-3 = 4;
+ws-icon-4 = 5;拓
+ws-icon-5 = 6;
+ws-icon-6 = 7;
+ws-icon-7 = 8;
+ws-icon-8 = 9;
+ws-icon-9 = 10;
 
+format = <label-state> <label-mode>
 
 ; Only show workspaces on the same output as the bar
 ;pin-workspaces = true
@@ -241,7 +214,7 @@ label-mode-background = ${colors.primary}
 
 ; focused = Active workspace on focused monitor
 label-focused-font = 4
-label-focused = %name%
+label-focused = %icon%
 label-focused-foreground = #fff
 label-focused-background = ${colors.puke}
 ;label-focused-overline = #60eaa5
@@ -255,7 +228,7 @@ label-focused-margin = 0
 
 ; unfocused = Inactive workspace on any monitor
 label-unfocused-font = 4
-label-unfocused = %name%
+label-unfocused = %icon%
 label-unfocused-padding = 2
 label-unfocused-background = ${colors.background-white}
 label-unfocused-foreground = ${colors.dull_white}
@@ -271,8 +244,8 @@ label-visible-background = ${self.label-focused-background}
 label-visible-padding = ${self.label-focused-padding}
 
 ; urgent = Workspace with urgency hint set
-label-urgent-font = 5
-label-urgent = %name% !
+label-urgent-font = 4
+label-urgent = %index% !
 label-urgent-background = ${module/bspwm.label-urgent-background}
 label-urgent-padding = ${module/bspwm.label-urgent-padding}
 
@@ -371,8 +344,8 @@ card = intel_backlight
 type = internal/cpu
 interval = 2
 format = <ramp-coreload>
-format-prefix =" "
-format-prefix-font = 4
+format-prefix =" "
+format-prefix-font = 8
 format-prefix-padding = 0
 ;format-prefix-foreground = ${colors.white}
 label = %percentage%%
@@ -473,8 +446,8 @@ date-alt = %Y-%m-%d
 time = "%I:%M"
 time-alt = "%I:%M:%S"
 
-format-prefix-font = 4
-format-prefix = " "
+format-prefix-font = 8
+format-prefix = " "
 format-prefix-padding = 1
 ;format-prefix-foreground = ${colors.white}
 format-prefix-background = ${colors.background-white}
@@ -522,49 +495,49 @@ bar-volume-empty-foreground = ${colors.grey}
 type = internal/battery
 battery = BAT0
 adapter = AC
-full-at = 98
+full-at = 99
 
 format-font = 4
 
-format-charging-prefix = ""
-format-charging-prefix-padding = 1
-format-discharging-prefix = ""
-format-discharging-prefix-padding = 1
+;format-charging-prefix = ""
+;format-charging-prefix-padding = 1
+;format-discharging-prefix = ""
+;format-discharging-prefix-padding = 1
 label-charging = %percentage%%
 label-discharging = %percentage%%
 
 format-charging-padding = 1
-format-charging = <label-charging>
-;format-charging-underline = #ff63a5
+format-charging = <animation-charging> <label-charging>
+format-charging-underline = #00ee00
 ;format-charging-overline = #ff63a5
 format-charging-background = ${colors.background-white}
 
 format-discharging-padding = 1
-format-discharging = <label-discharging>
-;format-discharging-underline = #ff63a5
+format-discharging = <ramp-capacity> <label-discharging>
+format-discharging-underline = #ffb52a
 ;format-discharging-overline = #ff63a5
 format-discharging-background = ${colors.background-white}
 
 format-full-font = 4
-format-full-prefix = "Full:"
-format-full-prefix-foreground = ${colors.white}
+format-full-prefix = ""
+format-full-prefix-foreground = ${colors.grey}
 ;format-full-underline = ${self.format-charging-underline}
 
-ramp-capacity-font = 5
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
-ramp-capacity-3 = 
-ramp-capacity-4 = 
-ramp-capacity-foreground = ${colors.white}
+ramp-capacity-font = 4
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+ramp-capacity-foreground = ${colors.grey}
 
-animation-charging-font = 5
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-3 = 
-animation-charging-4 = 
-animation-charging-foreground = ${colors.white}
+animation-charging-font = 4
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-foreground = ${colors.grey}
 animation-charging-framerate = 750
 
 [module/battery1]
@@ -576,28 +549,30 @@ full-at = 98
 label-charging = %percentage%%
 label-discharging = %percentage%%
 
-format-charging = <label-charging>
-format-charging-underline = #ffb52a
+format-charging = <animation-charging> <label-charging>
+format-charging-underline = #00ee00
 
-format-discharging = <label-discharging>
-format-discharging-underline = ${self.format-charging-underline}
+format-discharging = <ramp-capacity> <label-discharging>
+format-discharging-underline = #ffb52a
 
-format-full-prefix = " "
+
+format-full-prefix = " "
 format-full-prefix-foreground = ${colors.grey}
 format-full-underline = ${self.format-charging-underline}
 
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
-ramp-capacity-3 = 
-ramp-capacity-4 = 
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
 ramp-capacity-foreground = ${colors.grey}
 
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-3 = 
-animation-charging-4 = 
+animation-charging-font = 8
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
 animation-charging-foreground = ${colors.grey}
 animation-charging-framerate = 750
 
@@ -607,7 +582,7 @@ thermal-zone = 0
 warn-temperature = 60
 
 format = <ramp> <label>
-format-underline = #f50a4d
+
 format-warn = <ramp> <label-warn>
 format-warn-underline = ${self.format-underline}
 
@@ -618,7 +593,7 @@ label-warn-foreground = ${colors.secondary}
 ramp-0 = 
 ramp-1 = 
 ramp-2 = 
-ramp-foreground = ${colors.grey}
+ramp-foreground = ${colors.light_black}
 
 [module/powermenu]
 type = custom/menu
@@ -663,16 +638,28 @@ click-left = ~/.config/polybar/pavolume.sh --togmute
 scroll-up = ~/.config/polybar/pavolume.sh --up
 scroll-down = ~/.config/polybar/pavolume.sh --down
 
-[module/menu]
-type = custom/menu
-;content-font = 8
-;expand-right = true
-format-spacing = 2
+[module/pulse]
+type = internal/pulseaudio
+sink = alsa_output.pci-0000_00_1b.0.analog-stereo
+use-ui-max = true
 
-label-open = 
-label-close = 
-label-separator = |
-label-separator-spacing = 2
+format-volume-font = 8
+format-volume = <ramp-volume> <label-volume>
+label-volume = %percentage%%
+
+label-muted = 婢 %percentage%%
+;label-muted-padding = 3
+label-muted-foreground = #666
+label-muted-underline = ${colors.pink}
+
+ramp-volume-0 = 奄
+ramp-volume-1 = 奔
+ramp-volume-2 = 墳
+
+[module/text]
+type = custom/text
+content = ㊧
+content-underline = #666
 ;content-padding = 4
 
 [settings]

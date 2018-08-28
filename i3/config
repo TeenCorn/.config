@@ -18,20 +18,30 @@ font pango:monospace 8
 #		 \_/    \_______|\__|      \__| \_______|\_______/ \__| \_______|\_______/
 
 # Workspaces
-set $ws1 "1: "
-set $ws2 "2: "
-set $ws3 "3: "
-set $ws4 "4: "
-set $ws5 "5: "
-set $ws6 "6: "
-set $ws7 "7: "
-set $ws8 "8:"
-set $ws9 "9: "
-set $ws10 "10:"
+#set $ws1 "1: "
+#set $ws2 "2: "
+#set $ws3 "3: "
+#set $ws4 "4: "
+#set $ws5 "5: "
+#set $ws6 "6: "
+#set $ws7 "7: "
+#set $ws8 "8:"
+#set $ws9 "9: "
+#set $ws10 "10:"
+set $ws1 1
+set $ws2 2
+set $ws3 3
+set $ws4 4
+set $ws5 5
+set $ws6 6
+set $ws7 7
+set $ws8 8
+set $ws9 9
+set $ws10 "10"
 
 # Commands
 set $term termite
-set $compton compton -cCfzb -r 5 -I 0.06 -O 0.06 --inactive-dim 0.2 -l 0 -t 0 --shadow-exclude 'class_g ?= "Notify-osd"'
+set $compton compton -cCfzb -r 5 -I 0.06 -O 0.06 --inactive-dim 0.2 -l 0 -t 0 --shadow-exclude 'class_g ?= "Notify-osd"' --shadow-exclude 'class_g ?= "rofi"'
 set $exec exec --no-startup-id
 set $dummy $term --name=dummy -e
 
@@ -82,6 +92,8 @@ $exec mpd															# Music player daemon
 $exec $term --name=dropdown 										# Dropdown term
 $exec fcitx
 $exec gnome-calculator
+$exec xfce4-clipman
+$exec dbus-update-activation-environment --all
 exec_always --no-startup-id ~/.config/polybar/launch.white
 exec_always synclient TouchpadOff=1								# Turns off touchpad
 
@@ -95,9 +107,9 @@ focus_follows_mouse no
 $exec export XDG_CURRENT_DEKTOP=GNOME
 
 # i3-gaps settings
-##gaps inner 0
-##gaps outer 0
-##smart_gaps on
+gaps inner 15
+gaps outer 0
+smart_gaps on
 
 #	 $$\   $$\                    $$\       $$\                 $$\ $$\
 #	 $$ | $$  |                   $$ |      \__|                $$ |\__|
@@ -216,7 +228,9 @@ for_window [class="Thunar"] floating enable	#When opened, make it float
 for_window [instance="dropdown"] floating enable	#For "dropdown" terminal
 for_window [instance="dropdown"] move scratchpad
 for_window [instance="dummy"] move scratchpad
-for_window [title="gdb."] move workspace $ws9
+for_window [class="Nemiver"] move workspace $ws9; workspace $ws9
+for_window [class="REAPER"] move workspace $ws5; workspace $ws5
+#for_window [title="gdb."] move workspace $ws9
 # For c++ vim debugger
 # So that the phone is floating not tiled
 for_window [title="Android Emulator - ."] floating enable
@@ -229,9 +243,13 @@ for_window [class="mpv"] workspace $ws8; fullscreen
 for_window [instance="Console"] floating enable
 for_window [instance="gnome-calculator"] floating enable
 for_window [instance="gnome-calculator"] move scratchpad
-
-assign [class="mpv"] $ws8 		# When mpv opens, move to $ws8
-assign [class="Firefox"] $ws2	# When firefox opens, its moved to $ws2
+for_window [title="Friends List"] floating enable
+for_window [title="Steam - News*"] floating enable
+for_window [class="Gnome-system-monitor"] floating enable
+for_window [title="Steam*"] workspace $ws8
+assign [class="mpv"] 8
+assign [class="Firefox"] $ws2
+assign [class="Steam*"] $ws8
 
 #RESIZING_WINDOWS
 bindsym $mod+y resize grow width 30 px or 30ppt
@@ -258,9 +276,9 @@ bindsym $mod+Shift+m $exec mpc -p 6601 volume +100
 bindsym $sup+BackSpace $exec mpc -p 6601 seek 0%
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume $exec pactl set-sink-volume 1 +5% 	# increase sound volume
-bindsym XF86AudioLowerVolume $exec pactl set-sink-volume 1 -5% 	# decrease sound volume
-bindsym XF86AudioMute $exec pactl set-sink-mute 1 toggle 		# mute sound
+bindsym XF86AudioRaiseVolume $exec pactl set-sink-volume 0 +5% 	# increase sound volume
+bindsym XF86AudioLowerVolume $exec pactl set-sink-volume 0 -5% 	# decrease sound volume
+bindsym XF86AudioMute $exec pactl set-sink-mute 0 toggle 		# mute sound
 bindsym XF86AudioMicMute $exec pactl set-source-mute 1 toggle
 
 #		 ___                   __ __
@@ -272,13 +290,14 @@ bindsym XF86AudioMicMute $exec pactl set-source-mute 1 toggle
 bindsym $mod+Return workspace $ws1; layout tabbed; $exec $term				 		#Starts a terminal
 bindsym $mod+Shift+Return $exec $term
 bindsym $mod+q workspace $ws2; $exec qutebrowser					#Starts qutebrowser
-##bindsym $mod+g gaps inner all set 20; gaps outer all set 0
-##bindsym $mod+Shift+g gaps inner all set 0; gaps outer all set 0
-bindsym $mod+Shift+s scratchpad show
-bindsym $mod+r $exec urxvt -e ranger
+bindsym $mod+g gaps inner all set 15; gaps outer all set 0
+bindsym $mod+Shift+g gaps inner all set 0; gaps outer all set 0
+bindsym $mod+minus scratchpad show
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+r $exec $term -e ranger
 bindsym $mod+e $exec thunar							#starts thunar
 bindsym $mod+Shift+f workspace $ws2; $exec firefox				#starts firefox
-bindsym $mod+v workspace $ws3; $exec $term -e nvim			#starts vim
+bindsym $mod+v workspace $ws3; $exec nvim-gtk			#starts vim
 bindsym $mod+Shift+d [instance="dropdown"] scratchpad show
 bindsym $mod+F8 exec /home/teencorn/android-studio/bin/studio.sh
 bindsym $mod+semicolon $exec $term --name=htop -e htop
@@ -292,7 +311,7 @@ bindsym $sup+c workspace $ws3; $exec code
 bindsym $mod+c [instance="gnome-calculator"] scratchpad show
 
 # ROFI
-bindsym $mod+d $exec "rofi -show run -width 55 -sidebar-mode -eh 2 -lines 3 -separator-style solid -font \\"mono 12\\" -bw 0 -hide-scrollbar -color-window \\"#55508d, #ffb6c1, #000000\\" -color-normal \\"#7d8cc4, #000000, #bee7e8, #191919, #ffffff\\""
+bindsym $mod+d $exec "rofi -show drun
 
 # SCREENSHOTS
 bindsym $sup+s $exec scrot '%Y-%m-%d_$wx$h.png' -q 100 -e 'mv $f ~/Pictures/Screenshots'
@@ -302,7 +321,6 @@ bindsym XF86MonBrightnessUp $exec xbacklight -inc 10 		# increase screen brightn
 bindsym XF86MonBrightnessDown $exec xbacklight -dec 10 		# decrease screen brightness
 
 # Show dropdown terminal
-bindsym $mod+o move scratchpad
-bindsym $mod+Shift+t $exec synclient TouchpadOff=0
+bindsym $mod+Shift+t $exec sticky enable
 
 # vim:filetype=i3
