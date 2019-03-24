@@ -4,15 +4,22 @@
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-surround'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Harenome/vim-mipssyntax'
 Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'sts10/vim-pink-moon'
 Plug 'tomasiser/vim-code-dark'
-Plug 'lifepillar/vim-solarized8'
 Plug 'nightsense/strawberry'
+Plug 'owickstrom/vim-colors-paramount'
+Plug 'rakr/vim-two-firewatch'
+Plug 'KKPMW/sacredforest-vim'
+Plug 'romainl/Apprentice'
+Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
+Plug 'arcticicestudio/nord-vim'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf'                   " FZF is installed locally
 Plug 'soft-aesthetic/soft-era-vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
@@ -24,11 +31,12 @@ Plug 'equalsraf/neovim-gui-shim'
 call plug#end()
 
 """ Mundane
+syntax on
 set termguicolors
 set encoding=utf-8
 
 """ Theme
-colorscheme orange-moon
+colorscheme challenger_deep
 let g:materialmonokai_suble_spell=1
 let g:monochrome_italic_comments = 1
 let g:airline_theme = 'deus'
@@ -52,10 +60,12 @@ set hlsearch
 set ignorecase
 set smartcase
 set relativenumber
-set tabstop=4
-set shiftwidth=4
-set noshowmode
+set tabstop=2
+set shiftwidth=2
+set expandtab
 set fillchars=vert:┃
+set list lcs=tab:▏\ ,trail:•
+set mouse=ni
 
 " Deoplete
 let g:deoplete#enable_at_startup = 1
@@ -81,12 +91,18 @@ nnoremap <leader>sm z.
 nnoremap <leader>sb zb
 nnoremap <silent> <leader>sh :noh<CR>
 nnoremap <leader> <leader>so :on<CR>
+" Buffers
+nnoremap <silent> <leader>bn :bn<CR>
+nnoremap <silent> <leader>bp :bp<CR>
 " Open
 nnoremap <silent> <leader>ot :sp \| :terminal<CR>
 nnoremap <leader>oh :sp<Space>
 nnoremap <leader>ov :vsp<Space>
+
 "LeaderF
 nnoremap <silent> <leader>ff :FZF<CR>
+nnoremap <silent> <leader>fh :FZF ~<CR>
+nnoremap <silent> <leader>fb :Buffers<CR>
 " Nerd Tree
 map <silent> <leader>n :NERDTreeToggle<CR>
 " Background
@@ -100,10 +116,18 @@ endfunction
 nnoremap <leader>bc :call ChangeBackground()<CR>
 
 " Window Movement
-nnoremap <leader>hh <C-W><C-H>
-nnoremap <leader>ll <C-W><C-L>
-nnoremap <leader>jj <C-W><C-J>
-nnoremap <leader>kk <C-W><C-K>
+tnoremap <A-h> <C-\><C-N><C-w>h
+tnoremap <A-j> <C-\><C-N><C-w>j
+tnoremap <A-k> <C-\><C-N><C-w>k
+tnoremap <A-l> <C-\><C-N><C-w>l
+inoremap <A-h> <C-\><C-N><C-w>h
+inoremap <A-j> <C-\><C-N><C-w>j
+inoremap <A-k> <C-\><C-N><C-w>k
+inoremap <A-l> <C-\><C-N><C-w>l
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
 nnoremap <leader>\|\| <C-W>\|\|
 nnoremap <leader>== <C-W>==
 
@@ -124,7 +148,7 @@ let g:ycm_max_diagnostics_to_display = 50
 let g:ycm_confirm_extra_conf = 0
 "let g:ycm_autoclose_preview_window_after_insertion = 1
 "let g:ycm_autoclose_preview_window_after_completion = 1
-" YCM shortcuts
+" YCM shortcutS
 nnoremap <leader>yf :YcmCompleter FixIt<CR>
 nnoremap <leader>yg :YcmCompleter GoTo<CR>
 nnoremap <leader>yt :YcmCompleter GetType<CR>
@@ -145,10 +169,12 @@ let g:ale_sign_warning = '∙'
 
 " Move to nvim conf
 map cfg :vsp ~/.config/nvim/init.vim<CR>
+map <leader>do :vsp ~/TODO.md<CR>
 
 " Different build process for different filetypes
-autocmd Filetype markdown nnoremap <buffer> <F5> :! ~/scripts/./vimpdf.sh %<CR>
-autocmd Filetype html nnoremap <buffer> <F5> :! ~/scripts/./mview.sh %<CR>
+autocmd Filetype markdown nnoremap <buffer> <F5> :! ~/git/Scripts/./vimpdf.sh %<CR>
+autocmd Filetype html nnoremap <buffer> <F5> :! qutebrowser % &<CR>
+autocmd Filetype css nnoremap <buffer> <F5> :! qutebrowser ./index.html &<CR>
 
 call deoplete#custom#source('LanguageClient',
             \ 'min_pattern_length',
@@ -162,8 +188,13 @@ if executable('cquery')
 	let g:LanguageClient_settingsPath = '/home/teencorn/.config/nvim/settings.json'
 	set formatexpr=LanguageClient_textDocument_rangeFormatting()
 	autocmd Filetype cpp nnoremap <buffer> <silent> <F5> :! cd build && cmake .. \| make && nemiver bin/a.out<CR>
+	autocmd Filetype cpp nnoremap <buffer> <silent> <F10> :! cd build && cmake .. && make<CR>
 	autocmd Filetype cpp :let g:ale_enabled = 0
 	autocmd Filetype cpp setlocal completefunc=LanguageClient#complete
+	autocmd Filetype c nnoremap <buffer> <silent> <F5> :! cd build && cmake .. \| make && nemiver bin/a.out<CR>
+	autocmd Filetype c nnoremap <buffer> <silent> <F10> :! cd build && cmake .. && make<CR>
+	autocmd Filetype c :let g:ale_enabled = 0
+	autocmd Filetype c setlocal completefunc=LanguageClient#complete
 endif
 
 " Option for specific files
