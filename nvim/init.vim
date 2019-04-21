@@ -17,6 +17,7 @@ Plug 'KKPMW/sacredforest-vim'
 Plug 'romainl/Apprentice'
 Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
 Plug 'arcticicestudio/nord-vim'
+Plug 'rakr/vim-one'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf'                   " FZF is installed locally
 Plug 'soft-aesthetic/soft-era-vim'
@@ -36,7 +37,7 @@ set termguicolors
 set encoding=utf-8
 
 """ Theme
-colorscheme challenger_deep
+colorscheme paramount
 let g:materialmonokai_suble_spell=1
 let g:monochrome_italic_comments = 1
 let g:airline_theme = 'deus'
@@ -199,3 +200,27 @@ endif
 
 " Option for specific files
 autocmd Filetype asm <buffer> :let g:ale_enabled = 0
+
+" Pop up Terminal
+let s:term_buf = 0
+let s:term_win = 0
+
+function! TermToggle(height)
+    if win_gotoid(s:term_win)
+        hide
+    else
+        new terminal
+        exec "botright split"
+        exec "resize ".a:height
+        try
+            exec "buffer ".s:term_buf
+            exec "bd terminal"
+        catch
+            call termopen($SHELL, {"detach": 0})
+            let s:term_buf = bufnr("")
+            setlocal nonu nornu scl=no nocul
+        endtry
+        startinsert!
+        let s:term_win = win_getid()
+    endif
+  endfunction
