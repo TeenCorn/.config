@@ -6,6 +6,7 @@
 # Uncomment this to still load settings configured via autoconfig.yml
 # config.load_autoconfig()
 
+c.content.webrtc_ip_handling_policy = 'default-public-interface-only'
 # Store cookies. Note this option needs a restart with QtWebEngine on Qt
 # < 5.9.
 # Type: Bool
@@ -58,7 +59,7 @@ c.content.user_stylesheets = []
 # Number of URLs to show in the web history. 0: no history / -1:
 # unlimited
 # Type: Int
-c.completion.web_history_max_items = 10
+c.completion.web_history.max_items = 10
 
 # Directory to save downloads to. If unset, a sensible OS-specific
 # default is used.
@@ -67,7 +68,7 @@ c.downloads.location.directory = '~/Pictures'
 
 # Show a scrollbar.
 # Type: Bool
-c.scrolling.bar = False
+c.scrolling.bar = 'always'
 
 # Enable smooth scrolling for web pages. Note smooth scrolling does not
 # work with the `:scroll-px` command.
@@ -85,7 +86,7 @@ c.scrolling.smooth = False
 # is enabled. * `{current_url}`: URL of the current web page. *
 # `{protocol}`: Protocol (http/https/...) of the current web page.
 # Type: FormatString
-c.tabs.title.format = '{index}: {title}'
+c.tabs.title.format = '{index}: {current_title}'
 
 # Page to open if :open -t/-b/-w is used without URL. Use `about:blank`
 # for a blank page.
@@ -138,6 +139,7 @@ config.bind(':hint', 'images download')
 config.bind(';h', None)
 config.bind(';i', 'set downloads.location.directory ~/Pictures ;; hint links download')
 config.bind(';j', 'config-cycle content.javascript.enabled true false')
+config.bind(';p', 'config-cycle content.private_browsing false true')
 config.bind('<Ctrl+j>', 'scroll down')
 config.bind('<Ctrl+k>', 'scroll up')
 config.bind('J', 'tab-prev')
@@ -147,3 +149,16 @@ config.bind('d', 'scroll-page 0 1')
 config.bind('ef', 'hint all hover')
 config.bind('t', 'set-cmd-text -s :open -t')
 config.bind('x', 'tab-close')
+
+import dracula.draw
+
+dracula.draw.blood(c, {
+    'spacing': {
+        'vertical': 6,
+        'horizontal': 8
+    },
+    'font': {
+        'family': 'Menlo, Terminus, Monaco, Monospace',
+        'size': 10
+    }
+})
