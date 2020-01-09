@@ -1,5 +1,7 @@
 {
-        "initializationOptions": {
-                "cacheDirectory": "/tmp/cquery"
-        }
+  "initializationOptions": {
+    "cache": {
+      "directory": "/tmp/ccls"
+    }
+  }
 }
