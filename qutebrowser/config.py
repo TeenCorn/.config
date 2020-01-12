@@ -64,7 +64,7 @@ c.completion.web_history.max_items = 10
 # Directory to save downloads to. If unset, a sensible OS-specific
 # default is used.
 # Type: Directory
-c.downloads.location.directory = '~/Pictures'
+c.downloads.location.directory = '~/Storage/Pictures'
 
 # Show a scrollbar.
 # Type: Bool
@@ -136,29 +136,16 @@ c.bindings.key_mappings = {'<Ctrl+m>': '<Return>', '<Shift+Return>': '<Return>',
 
 # Bindings for normal mode
 config.bind(':hint', 'images download')
-config.bind(';h', None)
+config.unbind(';h')
 config.bind(';i', 'set downloads.location.directory ~/Pictures ;; hint links download')
 config.bind(';j', 'config-cycle content.javascript.enabled true false')
 config.bind(';p', 'config-cycle content.private_browsing false true')
 config.bind('<Ctrl+j>', 'scroll down')
 config.bind('<Ctrl+k>', 'scroll up')
-config.bind('J', 'tab-prev')
-config.bind('K', 'tab-next')
+config.bind('J', 'tab-next')
+config.bind('K', 'tab-prev')
 config.bind('b', 'scroll-page 0 -1')
 config.bind('d', 'scroll-page 0 1')
 config.bind('ef', 'hint all hover')
 config.bind('t', 'set-cmd-text -s :open -t')
 config.bind('x', 'tab-close')
-
-import dracula.draw
-
-dracula.draw.blood(c, {
-    'spacing': {
-        'vertical': 6,
-        'horizontal': 8
-    },
-    'font': {
-        'family': 'Menlo, Terminus, Monaco, Monospace',
-        'size': 10
-    }
-})
